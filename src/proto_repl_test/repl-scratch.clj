@@ -89,3 +89,42 @@
 (pprint/pprint ranks2)
 
 (charts/scatter-chart "Position scatter" (:ranks2 nl-data))
+
+;; 20170806
+;; Start working with normalized dataset
+
+(def nl-normalized-data
+  (edn/read-string
+    (slurp
+      (io/resource "NL-eindstanden-normalized.edn"))))
+
+(:rows nl-normalized-data)
+
+(defn filter-by-index [coll idxs]
+  (map (partial nth coll) idxs))
+
+(filter-by-index ["A" "B" "C" "D"] [2 3])
+
+(filter-by-index (first (:rows nl-normalized-data)) [2 3 4 5 6 7 8 9 10 11 12])
+
+(map #(filter-by-index % [2 3 4 5 6 7 8 9 10 11 12]) (:rows nl-normalized-data))
+
+(map #(prn %) [["1" "Z"] ["2"] ["A"] ["B"]])
+
+(def row [:a 1 2 3 4])
+
+(subvec row 1)
+
+(defn transform [row]
+  (hash-map (first row) (subvec row 2)))
+
+(transform row)
+
+(map transform (:rows nl-normalized-data))
+
+(def plays [{:band "Burial",     :plays 979,  :loved 9}
+            {:band "Eno",        :plays 2333, :loved 15}
+            {:band "Bill Evans", :plays 979,  :loved 9}
+            {:band "Magma",      :plays 2665, :loved 31}])
+
+(map #(update-in (select-keys % [:band]) [:rate] {}) plays)
