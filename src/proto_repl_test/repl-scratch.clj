@@ -138,3 +138,22 @@
     (sort-by first >)))
 
 (take 10 (longest-palindrome palindromes))
+
+(mapv + [1 2 3] [4 5 6])
+
+(defn non-nil-weight-pos-vec [[w p]]
+  (not (nil? p)))
+
+(filter non-nil-weight-pos-vec (mapv vector [:a :b :c] [1 nil 3]))
+
+(defn find-weights-for [weights-key weights]
+  (let [haystack (:rows weights)
+        needle   (first (filter #(= weights-key (first %)) haystack))]
+     (subvec needle 2 12)))
+
+(def sia-weights   (find-weights-for :sia raw-weights-data))
+(def ia-weights    (find-weights-for :ia  raw-weights-data))
+(def lin-weights   (find-weights-for :lin raw-weights-data))
+(def da-weights    (find-weights-for :da  raw-weights-data))
+(def sda-weights   (find-weights-for :sda raw-weights-data))
+(def na-weights    (find-weights-for :na  raw-weights-data))
