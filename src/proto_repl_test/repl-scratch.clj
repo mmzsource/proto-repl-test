@@ -128,3 +128,13 @@
             {:band "Magma",      :plays 2665, :loved 31}])
 
 (map #(update-in (select-keys % [:band]) [:rate] {}) plays)
+
+(def palindromes ["hannah" "kayak" "civic" "deified"])
+
+(defn longest-palindrome [words]
+  (->> words
+    (filter #(= (seq %) (reverse %)))
+    (map #(vector (count %) %))
+    (sort-by first >)))
+
+(take 10 (longest-palindrome palindromes))
