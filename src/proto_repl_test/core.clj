@@ -59,9 +59,9 @@
         team-history  (subvec team-data 2 12)
         last-team-pos (last team-data)]
     (merge
-      {:team     team-keyword}
-      {:history  team-history}
-      {:last-pos last-team-pos}
+      {:team     team-keyword
+       :history  team-history
+       :last-pos last-team-pos}
       (reduce merge
         (map #(hash-map
                 %

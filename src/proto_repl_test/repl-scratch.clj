@@ -157,3 +157,21 @@
 (def da-weights    (find-weights-for :da  raw-weights-data))
 (def sda-weights   (find-weights-for :sda raw-weights-data))
 (def na-weights    (find-weights-for :na  raw-weights-data))
+
+(prn (->> [0.500 0.550 0.587 0.611 0.623 0.623 0.611 0.587 0.550 0.500]
+       (map #(- 1 %))))
+
+(pprint/pprint
+  (map reverse [[:da1  "decreasing ascend 1"  0.062 0.557 0.721 0.822 0.888 0.935 0.966 0.986 0.997 0.999]
+                [:da2  "decreasing ascend 2"  0.007 0.396 0.584 0.708 0.798 0.865 0.915 0.953 0.981 0.998]
+                [:da3  "decreasing ascend 3"  0.003 0.265 0.446 0.582 0.690 0.778 0.850 0.910 0.959 0.998]
+                [:da4  "decreasing ascend 4"  0.002 0.173 0.322 0.454 0.570 0.674 0.768 0.853 0.930 0.998]
+                [:la   "lineair ascend"       0.001 0.112 0.223 0.334 0.445 0.556 0.667 0.778 0.889 0.999]
+                [:ia4  "increasing ascend 4"  0.002 0.070 0.147 0.232 0.326 0.430 0.546 0.678 0.827 0.998]
+                [:ia3  "increasing ascend 3"  0.002 0.041 0.090 0.150 0.222 0.310 0.418 0.554 0.735 0.997]
+                [:ia2  "increasing ascend 2"  0.002 0.019 0.047 0.085 0.135 0.202 0.292 0.416 0.604 0.993]
+                [:ia1  "increasing ascend 1"  0.001 0.003 0.014 0.034 0.065 0.112 0.178 0.279 0.443 0.938]]))
+
+(defn la2 [x] (+ 0.25 (* 0.5 x)))
+
+(map la2 (range 0.001 1 0.111))
