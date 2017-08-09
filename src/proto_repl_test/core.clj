@@ -69,3 +69,13 @@
            (keys weights-data))))))
 
 (map team-averages (:rows raw-league-data))
+
+;; Finding the keys of the best 3 predictions:
+
+(def m {:p1 5 :p2 7 :p3 9 :p4 2 :p5 8 :lp 6 :na "not applicable"})
+
+(def fm (select-keys m [:p1 :p2 :p3 :p4 :p5]))
+
+(def diff-fm (zipmap (keys fm) (map #(Math/abs (- (:lp m) %)) (vals fm))))
+
+(keys (take 3 (sort-by val < diff-fm)))
