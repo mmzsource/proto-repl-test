@@ -18,6 +18,12 @@
     (slurp (io/resource "weights.edn"))))
 
 
+(defn transform-raw-data [raw-data]
+  (->> (:rows raw-data)
+       (map #(hash-map (first %) (subvec % 2)))
+       (reduce merge)))
+
+
 (def league-data (transform-raw-data raw-league-data))
 
 

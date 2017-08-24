@@ -100,4 +100,5 @@
                                 (predict-new-positions
                                   league-data weights-data best-predictors)
                                 (:teams raw-league-data)))]
+    (pp/pprint (select-keys best-predictors (keys predicted-positions)))
     (pp/pprint predicted-positions)))
