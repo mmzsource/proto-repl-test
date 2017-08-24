@@ -1,4 +1,4 @@
-(ns proto-repl-test.repl-scratch
+(ns proto-repl-test.scratch
   (:require [prc :as charts]
             [clj-http.client :as client]
             [clojure.pprint :as pprint]
@@ -190,3 +190,7 @@
 (defn work-with-test-map-entry [[k v]]
   (prn "key: " k " - val: " v))
 (map work-with-test-map-entry test-map)
+(defn work-with-test-map-entry2 [some-string [k v]]
+  (prn some-string " - " k " - " v))
+(map (partial work-with-test-map-entry2 "bla") test-map)
+(map prn test-map)

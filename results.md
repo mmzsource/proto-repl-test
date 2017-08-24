@@ -1,0 +1,121 @@
+Commit hash 86e808c - predict NL league - first version
+
+;; Best predicators for last season:
+{:EXC :ia1,
+ :RKC :ia1,
+ :DOR :dd1,
+ :CAM :ia1,
+ :A29 :id1,
+ :GRA :ia1,
+ :JAJ :ia1,
+ :HEL :ia1,
+ :ALC :ia1,
+ :UTR :ia1,
+ :ROD :ia1,
+ :NEC :ia1,
+ :WIL :ia1,
+ :AZA :ia1,
+ :BOS :ia1,
+ :HEA :ia1,
+ :HEE :ia1,
+ :PSV :ia1,
+ :VIT :ia1,
+ :GRO :ia1,
+ :NAC :ia1,
+ :TEL :ia1,
+ :SIT :ia2,
+ :GAE :ia1,
+ :SPR :ia1,
+ :OSS :ia1,
+ :JPS :ia1,
+ :ADO :ia1,
+ :MVV :ia1,
+ :TWE :ia1,
+ :EHV :ia1,
+ :PEC :ia1,
+ :VVV :ia1,
+ :EMM :ia1,
+ :FEY :ia1,
+ :VOL :ia1,
+ :AJA :ia1}
+
+;; Predicted positions:
+
+([:AJA 1.8132559264634733]
+ [:FEY 2.238993710691824]
+ [:PSV 2.333817126269956]
+ [:AZA 5.447992259313013]
+ [:UTR 6.062893081761006]
+ [:VIT 6.188195452346395]
+ [:GRO 7.781325592646348]
+ [:TWE 8.129172714078374]
+ [:HEE 8.903725205611996]
+ [:HEA 10.147556845670053]
+ [:ADO 11.087082728592163]
+ [:PEC 11.53894533139816]
+ [:WIL 14.313981615868407]
+ [:EXC 15.295113691340106]
+ [:ROD 16.468311562651184]
+ [:SPR 19.660861151427188]
+ [:NAC 19.797290759554908]
+ [:VVV 20.084663763909045])
+
+
+ Current version:
+
+ {:EXC :v1,
+ :RKC :ia2,
+ :DOR :id4,
+ :CAM :h1,
+ :A29 :id1,
+ :GRA :ia3,
+ :JAJ :ia1,
+ :HEL :v1,
+ :ALC :ia1,
+ :UTR :ia1,
+ :ROD :ia1,
+ :NEC :ia3,
+ :WIL :v1,
+ :AZA :dd1,
+ :BOS :ia1,
+ :HEA :ia1,
+ :HEE :ia1,
+ :PSV :h1,
+ :VIT :ia1,
+ :GRO :da4,
+ :NAC :ia1,
+ :TEL :da1,
+ :SIT :v1,
+ :GAE :ia1,
+ :SPR :id2,
+ :OSS :ia3,
+ :JPS :id1,
+ :ADO :ia1,
+ :MVV :dd3,
+ :TWE :v1,
+ :EHV :h1,
+ :PEC :da3,
+ :VVV :v3,
+ :EMM :ia2,
+ :FEY :ia1,
+ :VOL :dd2,
+ :AJA :id2}
+
+ ([:AJA 1.9606440071556352]
+ [:FEY 2.238993710691824]
+ [:PSV 2.567987957852484]
+ [:AZA 5.639606706164124]
+ [:TWE 5.933925049309665]
+ [:UTR 6.062893081761006]
+ [:VIT 6.188195452346395]
+ [:GRO 7.88474930362117]
+ [:HEE 8.903725205611996]
+ [:HEA 10.147556845670053]
+ [:ADO 11.087082728592163]
+ [:PEC 13.187779663632156]
+ [:WIL 14.130670611439845]
+ [:ROD 16.468311562651184]
+ [:SPR 16.700894454382826]
+ [:EXC 16.89497041420119]
+ [:VVV 18.535551763367458]
+ [:NAC 19.797290759554908])

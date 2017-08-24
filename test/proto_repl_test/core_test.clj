@@ -11,5 +11,4 @@
 
 (deftest calc-avg-pos-should-calculate-average-position
  (testing "should calculate average position based on weight-position-map"
-   (let [wps1 '([2 5] [1 11])]
-     (is (= (calc-avg-pos '([2 5] [1 11])) 7)))))
+   (is (= (calc-avg-pos [2 3 1] [5 nil 11])) 7)))
