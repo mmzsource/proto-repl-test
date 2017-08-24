@@ -175,3 +175,18 @@
 (defn la2 [x] (+ 0.25 (* 0.5 x)))
 
 (map la2 (range 0.001 1 0.111))
+
+;; Finding the keys of the best 3 predictions:
+
+(def m {:p1 5 :p2 7 :p3 9 :p4 2 :p5 8 :lp 6 :na "not applicable"})
+
+(def fm (select-keys m [:p1 :p2 :p3 :p4 :p5]))
+
+(def diff-fm (zipmap (keys fm) (map #(Math/abs (- (:lp m) %)) (vals fm))))
+
+(keys (take 3 (sort-by val < diff-fm)))
+
+(def test-map {:a :fiets :b :bel})
+(defn work-with-test-map-entry [[k v]]
+  (prn "key: " k " - val: " v))
+(map work-with-test-map-entry test-map)

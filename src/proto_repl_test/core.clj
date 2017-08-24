@@ -68,14 +68,90 @@
                 (calc-avg-pos (weight-position-seq (% weights-data) team-history)))
            (keys weights-data))))))
 
-(map team-averages (:rows raw-league-data))
+(def pre-predictions (map team-averages (:rows raw-league-data)))
 
-;; Finding the keys of the best 3 predictions:
+(defn find-best-predictor [team-predictions]
+  (let [predictions        (select-keys (first pre-predictions) (keys weights-data))
+        diff-with-last-pos (zipmap
+                            (keys predictions)
+                            (map #(Math/abs (- (:last-pos team-predictions) %))
+                                 (vals predictions)))
+        best-predictor      (key (first (sort-by val < diff-with-last-pos)))]
+      {(:team team-predictions) best-predictor}))
 
-(def m {:p1 5 :p2 7 :p3 9 :p4 2 :p5 8 :lp 6 :na "not applicable"})
+(defn find-best-predictors [team-predictions-seq]
+  (reduce merge (map find-best-predictor team-predictions-seq)))
 
-(def fm (select-keys m [:p1 :p2 :p3 :p4 :p5]))
+(def best-predictors (find-best-predictors (map team-averages (:rows raw-league-data))))
 
-(def diff-fm (zipmap (keys fm) (map #(Math/abs (- (:lp m) %)) (vals fm))))
+(defn predict-new-position [[team best-weight-curve]]
+  {team (calc-avg-pos (weight-position-seq (best-weight-curve weights-data) (rest (team league-data))))})
 
-(keys (take 3 (sort-by val < diff-fm)))
+(defn predict-new-positions [best-predictors]
+  (reduce merge (map predict-new-position best-predictors)))
+
+(def predicted-positions
+  (sort-by val < (select-keys
+                   (predict-new-positions best-predictors)
+                   [:ADO :AJA :AZA :EXC :FEY :GRO :HEA :HEE :NAC :PEC
+                    :PSV :ROD :SPR :TWE :UTR :WIL :VIT :VVV])))
+
+;; Best predicators for last season:
+{:EXC :ia1,
+ :RKC :ia1,
+ :DOR :dd1,
+ :CAM :ia1,
+ :A29 :id1,
+ :GRA :ia1,
+ :JAJ :ia1,
+ :HEL :ia1,
+ :ALC :ia1,
+ :UTR :ia1,
+ :ROD :ia1,
+ :NEC :ia1,
+ :WIL :ia1,
+ :AZA :ia1,
+ :BOS :ia1,
+ :HEA :ia1,
+ :HEE :ia1,
+ :PSV :ia1,
+ :VIT :ia1,
+ :GRO :ia1,
+ :NAC :ia1,
+ :TEL :ia1,
+ :SIT :ia2,
+ :GAE :ia1,
+ :SPR :ia1,
+ :OSS :ia1,
+ :JPS :ia1,
+ :ADO :ia1,
+ :MVV :ia1,
+ :TWE :ia1,
+ :EHV :ia1,
+ :PEC :ia1,
+ :VVV :ia1,
+ :EMM :ia1,
+ :FEY :ia1,
+ :VOL :ia1,
+ :AJA :ia1}
+
+;; Predicted positions for this season:
+
+([:AJA 1.8132559264634733]
+ [:FEY 2.238993710691824]
+ [:PSV 2.333817126269956]
+ [:AZA 5.447992259313013]
+ [:UTR 6.062893081761006]
+ [:VIT 6.188195452346395]
+ [:GRO 7.781325592646348]
+ [:TWE 8.129172714078374]
+ [:HEE 8.903725205611996]
+ [:HEA 10.147556845670053]
+ [:ADO 11.087082728592163]
+ [:PEC 11.53894533139816]
+ [:WIL 14.313981615868407]
+ [:EXC 15.295113691340106]
+ [:ROD 16.468311562651184]
+ [:SPR 19.660861151427188]
+ [:NAC 19.797290759554908]
+ [:VVV 20.084663763909045])
