@@ -61,7 +61,8 @@
                 (calc-avg-pos (% weights-data) team-history))
            (keys weights-data))))))
 
-(defn find-best-predictor [weights-data raw-league-data team-predictions]
+
+(defn find-best-predictor [weights-data team-predictions]
   (let [predictions        (select-keys team-predictions (keys weights-data))
         diff-with-last-pos (zipmap
                              (keys predictions)
@@ -71,8 +72,8 @@
       {(:team team-predictions) best-predictor}))
 
 
-(defn find-best-predictors [team-predictions weights-data raw-league-data]
-  (reduce merge (map (partial find-best-predictor weights-data raw-league-data) team-predictions)))
+(defn find-best-predictors [team-predictions weights-data]
+  (reduce merge (map (partial find-best-predictor weights-data) team-predictions)))
 
 
 (defn predict-new-position [league-data weights-data [team best-weight-curve]]
@@ -84,6 +85,7 @@
 (defn predict-new-positions [league-data weights-data best-predictors]
   (reduce merge (map (partial predict-new-position league-data weights-data) best-predictors)))
 
+
 (defn -main [& args]
   (let [raw-league-data     (load-raw-data
                               (load-a-file (or (first args) "NL.edn")))
@@ -92,7 +94,7 @@
         weights-data        (transform-raw-data raw-weights-data)
         team-predictions    (map (partial team-averages weights-data)
                                  (:rows raw-league-data))
-        best-predictors     (find-best-predictors team-predictions weights-data raw-league-data)
+        best-predictors     (find-best-predictors team-predictions weights-data)
         predicted-positions (sort-by val <
                               (select-keys
                                 (predict-new-positions
