@@ -62,8 +62,8 @@
            (keys weights-data))))))
 
 
-(defn find-best-predictor [weights-data team-predictions]
-  (let [predictions        (select-keys team-predictions (keys weights-data))
+(defn find-best-predictor [predictor-keys team-predictions]
+  (let [predictions        (select-keys team-predictions predictor-keys)
         diff-with-last-pos (zipmap
                              (keys predictions)
                              (map #(Math/abs (- (:last-pos team-predictions) %))
@@ -73,7 +73,7 @@
 
 
 (defn find-best-predictors [team-predictions weights-data]
-  (reduce merge (map (partial find-best-predictor weights-data) team-predictions)))
+  (reduce merge (map (partial find-best-predictor (keys weights-data)) team-predictions)))
 
 
 (defn predict-new-position [league-data weights-data [team best-weight-curve]]

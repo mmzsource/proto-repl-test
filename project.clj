@@ -10,4 +10,5 @@
                  [cheshire "5.7.0"]]
   :main ^:skip-aot proto-repl-test.core
   :target-path "target/%s"
+  :test-paths ["test" "test/proto_repl_test"]
   :profiles {:uberjar {:aot :all}})
