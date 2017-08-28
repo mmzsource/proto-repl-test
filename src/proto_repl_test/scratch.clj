@@ -194,3 +194,70 @@
   (prn some-string " - " k " - " v))
 (map (partial work-with-test-map-entry2 "bla") test-map)
 (map prn test-map)
+
+(zipmap
+  (range 1 21)
+  [:CHE :MCI :TOT :ARS :LIV :MUN :EVE :SOU :WHU :WBA :STK :LEI :BOU :CRY :SWA :NEW :WAT :BUR :BRI :HUD])
+
+(zipmap
+  (range 1 19)
+  [:AJA :FEY :PSV :AZA :TWE :UTR :VIT :GRO :HEE :HEA
+   :ADO :PEC :WIL :ROD :SPR :EXC :VVV :NAC])
+
+(zipmap
+  (range 1 19)
+  [:BAY
+   :DOR
+   :WOL
+   :SCH
+   :LEV
+   :WER
+   :MON
+   :BER
+   :KOE
+   :TSG
+   :LEP
+   :AUG
+   :SGE
+   :FRE
+   :HSV
+   :MAI
+   :HAN
+   :STU])
+
+(zipmap
+  (range 1 21)
+  [:REA
+   :FCB
+   :ATM
+   :VIL
+   :SEV
+   :MLA
+   :ATB
+   :SOC 
+   :VAL
+   :ESY
+   :CLV
+   :EIB
+   :BET
+   :COR
+   :LAP
+   :ALV
+   :GET
+   :LVT
+   :LEG
+   :GIR])
+
+(map prn (sort [:BAY :LEP :DOR :TSG :KOE :BER :FRE :WER :MON
+                :SCH :SGE :LEV :AUG :HSV :MAI :WOL :ING :DAR
+                :STU :HAN :NUR]))
+
+(sort [:REA :FCB :ATM :SEV :VIL :SOC :ATB :ESY :ALV :EIB
+       :MLA :VAL :CLV :LAP :BET :COR :LEG :GIJ :OSA :GRA
+       :GIR :LVT :GET :RAY :ALM :VLD :RMA :RZA :RSA])
+
+(let [calculations {:calc1 '(+ 1 2) :calc2 '(+ 2 3)}]
+  (reduce (fn [result-map [k v]] (assoc result-map k (eval v))) {} calculations))
+
+(let [calculations {:calc1 '(+ 1 2) :calc2 '(+ 2 3)}]
+  (reductions (fn [result-map [k v]] (assoc result-map k (eval v))) {} calculations))
