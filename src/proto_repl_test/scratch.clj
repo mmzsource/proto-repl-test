@@ -234,7 +234,7 @@
    :SEV
    :MLA
    :ATB
-   :SOC 
+   :SOC
    :VAL
    :ESY
    :CLV
@@ -261,3 +261,93 @@
 
 (let [calculations {:calc1 '(+ 1 2) :calc2 '(+ 2 3)}]
   (reductions (fn [result-map [k v]] (assoc result-map k (eval v))) {} calculations))
+
+(type (double-array [1 2 3]))
+
+(frequencies (mapcat vals [{1 :a 2 :b 3 :c} {4 :d 5 :e 6 :a}]))
+
+(sort-by val >
+  (frequencies
+    (vals
+      {:EXC :v1, :UTR :ia1, :ROD :ia1, :WIL :v1, :AZA :dd1, :HEA :ia1, :HEE :ia1,
+       :PSV :h1, :VIT :ia1, :GRO :da4, :NAC :ia1, :SPR :id2, :ADO :ia1, :TWE :v1,
+       :PEC :da3, :VVV :v3, :FEY :ia1, :AJA :id2})))
+
+;; ([:ia1 8] [:v1 3] [:id2 2] [:dd1 1] [:h1 1] [:da4 1] [:da3 1] [:v3 1])
+
+(sort-by val >
+  (frequencies
+    (vals
+      {:HSV :ia1, :BAY :ia1, :TSG :id1, :LEP :ia1, :LEV :id1, :DOR :ia1, :STU :ia1,
+       :MON :da1, :WER :v1, :WOL :id1, :HAN :ia1, :MAI :id4, :SGE :dd1, :AUG :la1,
+       :BER :v1, :SCH :da2, :FRE :da4, :KOE :ia1})))
+
+;; ([:ia1 7] [:id1 3] [:v1 2] [:dd1 1] [:id4 1] [:da1 1] [:da4 1] [:la1 1] [:da2 1])
+
+(sort-by val >
+  (frequencies
+    (vals
+      {:SWA :v2 :BRI :ia1, :STK :h1, :BUR :ia1, :MCI :la1, :WHU :v1, :LIV :id2,
+       :NEW :ia1, :ARS :id1, :TOT :ia1, :CRY :ia1, :HUD :dd1, :SOU :ia1,
+       :EVE :h3, :LEI :ia1, :BOU :ia1, :WAT :ia1, :WBA :ia1, :CHE :id1,
+       :MUN :ia1})))
+
+;; ([:ia1 11] [:id1 2] [:v2 1] [:dd1 1] [:v1 1] [:id2 1] [:h1 1] [:la1 1] [:h3 1])
+
+(sort-by val >
+  (frequencies
+    (vals
+      {:VIL :v1, :ALV :ia1, :EIB :ia1, :SOC :ia1, :BET :ia2, :VAL :ia1,
+       :ESY :id1, :CLV :ia3, :LAP :ia1, :GET :ia1, :SEV :id1, :REA :id1,
+       :LEG :ia1, :COR :la2, :LVT :id2, :MLA :id1, :ATM :ia1, :GIR :ia1,
+       :FCB :id1, :ATB :ia3})))
+
+;; ([:ia1 9] [:id1 5] [:ia3 2] [:v1 1] [:ia2 1] [:la2 1] [:id2 1])
+
+;; All weights 'on':
+
+(sort-by val >
+  (frequencies
+    (mapcat
+      vals
+      [{:EXC :v1, :UTR :ia1, :ROD :ia1, :WIL :v1, :AZA :dd1, :HEA :ia1, :HEE :ia1,
+        :PSV :h1, :VIT :ia1, :GRO :da4, :NAC :ia1, :SPR :id2, :ADO :ia1, :TWE :v1,
+        :PEC :da3, :VVV :v3, :FEY :ia1, :AJA :id2}
+       {:HSV :ia1, :BAY :ia1, :TSG :id1, :LEP :ia1, :LEV :id1, :DOR :ia1, :STU :ia1,
+        :MON :da1, :WER :v1, :WOL :id1, :HAN :ia1, :MAI :id4, :SGE :dd1, :AUG :la1,
+        :BER :v1, :SCH :da2, :FRE :da4, :KOE :ia1}
+       {:SWA :v2 :BRI :ia1, :STK :h1, :BUR :ia1, :MCI :la1, :WHU :v1, :LIV :id2,
+        :NEW :ia1, :ARS :id1, :TOT :ia1, :CRY :ia1, :HUD :dd1, :SOU :ia1,
+        :EVE :h3, :LEI :ia1, :BOU :ia1, :WAT :ia1, :WBA :ia1, :CHE :id1,
+        :MUN :ia1}
+       {:VIL :v1, :ALV :ia1, :EIB :ia1, :SOC :ia1, :BET :ia2, :VAL :ia1,
+        :ESY :id1, :CLV :ia3, :LAP :ia1, :GET :ia1, :SEV :id1, :REA :id1,
+        :LEG :ia1, :COR :la2, :LVT :id2, :MLA :id1, :ATM :ia1, :GIR :ia1,
+        :FCB :id1, :ATB :ia3}])))
+
+;; ([:ia1 35] [:id1 10] [:v1 7] [:id2 4] [:dd1 3] [:ia3 2] [:da4 2] [:h1 2]
+;;  [:la1 2] [:v2 1] [:da3 1] [:ia2 1] [:id4 1] [:la2 1] [:da1 1] [:v3 1]
+;;  [:h3 1] [:da2 1]
+
+;; Only :da1, :ia1, :hor and :la1 'on'
+
+(sort-by val >
+  (frequencies
+    (mapcat
+      vals
+      [{:EXC :ia1, :UTR :ia1, :ROD :ia1, :WIL :ia1, :AZA :da1, :HEA :ia1,
+        :HEE :ia1, :PSV :da1, :VIT :ia1, :GRO :la1, :NAC :ia1, :SPR :hor,
+        :ADO :ia1, :TWE :la1, :PEC :da1, :VVV :da1, :FEY :ia1, :AJA :ia1}
+       {:HSV :ia1, :BAY :ia1, :TSG :hor, :LEP :ia1, :LEV :hor, :DOR :ia1,
+        :STU :ia1, :MON :da1, :WER :hor, :WOL :hor, :HAN :ia1, :MAI :hor,
+        :SGE :hor, :AUG :la1, :BER :ia1, :SCH :da1, :FRE :la1, :KOE :ia1}
+       {:SWA :da1, :BRI :ia1, :STK :da1, :BUR :ia1, :MCI :la1, :WHU :ia1,
+        :LIV :hor, :NEW :ia1, :ARS :hor, :TOT :ia1, :CRY :ia1, :HUD :la1,
+        :SOU :ia1, :EVE :hor, :LEI :ia1, :BOU :ia1, :WAT :ia1, :WBA :ia1,
+        :CHE :hor, :MUN :ia1}
+       {:VIL :ia1, :ALV :ia1, :EIB :ia1, :SOC :ia1, :BET :ia1, :VAL :ia1,
+        :ESY :hor, :CLV :la1, :LAP :ia1, :GET :ia1, :SEV :hor, :REA :hor,
+        :LEG :ia1, :COR :da1, :LVT :hor, :MLA :hor, :ATM :ia1, :GIR :ia1,
+        :FCB :hor, :ATB :la1}])))
+
+;; ([:ia1 42] [:hor 17] [:da1 9] [:la1 8]) 
