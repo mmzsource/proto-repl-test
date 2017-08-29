@@ -5,7 +5,7 @@
   (assert (string?  team-name))
   (assert (vector?  team-history))
   (assert (> (count team-history) 1))
-  (assert (every? number? team-history))
+  (assert (every? #(or (number? %) (nil? %)) team-history))
   (vector team-key team-name team-history))
 
 (defn- team-keyword [[team-key _ _]]

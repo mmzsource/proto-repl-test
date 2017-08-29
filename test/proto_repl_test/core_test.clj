@@ -3,12 +3,12 @@
             [proto-repl-test.core :refer :all]))
 
 
-(deftest wpm-should-filter-nil-positions
+(deftest should-filter-nil-y-vals
   (testing "should zipmap inputs and filter nil positions"
     (let [weights   [2 3 1]
           positions [5 nil 11]
-          weight-position-seq (weight-position-seq weights positions)]
-      (is (= weight-position-seq [[2 5] [1 11]])))))
+          weight-positions (filtered-xy weights positions)]
+      (is (= weight-positions [[2 5] [1 11]])))))
 
 
 (deftest calc-avg-pos-should-calculate-average-position
@@ -29,7 +29,7 @@
   (testing "should calculate team averages correctly"
     (let [weights   {:horizontal [0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5]
                      :ascend     [0.001 0.003 0.014 0.034 0.065 0.112 0.178 0.279 0.443 0.938]}
-          team-data [:PSV "PSV" 1 1 4 3 3 3 2 4 1 1 3]
+          team-data [:PSV "PSV" [1 1 4 3 3 3 2 4 1 1 3]]
           expected  {:team       :PSV,
                      :history    [1 1 4 3 3 3 2 4 1 1],
                      :last-pos   3,
@@ -42,7 +42,7 @@
   (testing "team averages handles nil correctly"
     (let [weights   {:horizontal [0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5]
                      :ascend     [0.001 0.003 0.014 0.034 0.065 0.112 0.178 0.279 0.443 0.938]}
-          team-data [:JPS "Jong PSV" nil nil nil nil nil nil nil 28 32 29 22]
+          team-data [:JPS "Jong PSV" [nil nil nil nil nil nil nil 28 32 29 22]]
           expected  {:team       :JPS,
                      :history    [nil nil nil nil nil nil nil 28 32 29],
                      :last-pos   22,

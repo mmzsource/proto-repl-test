@@ -407,6 +407,29 @@ The underlying data:
   On top of these 4 weight curves, I would love to plugin 1 more prediction:
   simple linear regression and compare it with these results.
 
+The plan:
+
+;; Convert Raw Data to Team:
+;; [:PSV "PSV" [1 1 4 3 3 3 2 4 1 1 3]]
+
+;; Predict last position for team with different weight curves
+;; {:da1 2.33}
+;; {:da1 2.33, :ia1 2.35}
+;; {:da1 2.33, :ia1 2.35 :hor 2.24}
+;; {:da1 2.33, :ia1 2.35 :hor 2.24 :la1 2.14}
+
+;; Predict last position with simple linear regression:
+;; {:da1 2.33, :ia1 2.35 :hor 2.24 :la1 2.14 :slr 2.03}
+
+;; Find best predictor of last position:
+;; {:da1 2.33, :ia1 2.35 :hor 2.24 :la1 2.14 :slr 2.03 :best :ia1}
+;; {:PSV :ia1}
+
+;; Predict new position with best predictor:
+;; {:PSV 2.55}
+
+;; Sort together with other teams
+
 ## License
 
 Use / change / redistribute at your own risk. It is not copyrighted. I'm standing on the shoulders of giants here.

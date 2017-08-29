@@ -350,4 +350,24 @@
         :LEG :ia1, :COR :da1, :LVT :hor, :MLA :hor, :ATM :ia1, :GIR :ia1,
         :FCB :hor, :ATB :la1}])))
 
-;; ([:ia1 42] [:hor 17] [:da1 9] [:la1 8]) 
+;; ([:ia1 42] [:hor 17] [:da1 9] [:la1 8])
+
+
+(defn bezier-3 [P0 P1 P2]
+  (fn [t]
+    (+
+      (* (Math/pow (- 1 t) 2) P0)
+      (* 2 (- 1 t) t          P1)
+      (* (Math/pow t 2)       P2))))
+
+(def da-ys (bezier-3 0 1 1))
+
+(filter #(not (nil? (last %)))
+  (mapv vector (range) [2 nil nil 3]))
+
+(reduce + 0 [2 3])
+
+(reductions
+  (fn [v [x y]] (conj v x))
+  []
+  [[0 2] [3 3]])

@@ -3,6 +3,11 @@
             [proto-repl-test.team :refer :all]))
 
 
+(deftest should-construct-a-team
+  (testing "the construction of a team datatype"
+    (is (= [:FIETS "bel" [9 8 7 6]] (construct :FIETS "bel" [9 8 7 6])))))
+
+
 (deftest should-hide-team-structure
   (testing "should hide team structure"
     (let [my-team [:BLA "blabla" [1 2 3 4 5]]]
