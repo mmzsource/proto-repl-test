@@ -71,3 +71,24 @@
                            :ascend     [0.001 0.003 0.014 0.034 0.065 0.112 0.178 0.279 0.443 0.938]}
           best-predictors {:PSV :ascend :AJA :horizontal}]
       (is (= {:PSV 2.333817126269956 :AJA 1.7} (predict-new-positions league-data weights best-predictors))))))
+
+
+(deftest calculates-lin-reg-vals1
+  (testing "calculates linear regression y values for each x value"
+     (let [xs [1.0 2.0 3.0 4.0 5.0]
+           ys [2.0 2.5 3.0 3.5 4.0]]
+       (is (= [2.0 2.5 3.0 3.5 4.0] (linreg-vals xs ys))))))
+
+
+(deftest calculates-lin-reg-vals2
+  (testing "calculates linear regression y values for each x value"
+     (let [xs [1.0 2.0 3.0 4.0 5.0]
+           ys [2.0 2.5 2.5 3.5 4.0]]
+       (is (= [1.9 2.4 2.9 3.4 3.9] (linreg-vals xs ys))))))
+
+(deftest calculates-lin-reg-fn
+  (testing "calculates linear regression function which extrapolates correctly"
+     (let [xs [1.0 2.0 3.0 4.0 5.0]
+           ys [2.0 2.5 3.0 3.5 4.0]]
+       (is (= 1.5 ((linreg-fn xs ys) 0.0)))
+       (is (= 4.5 ((linreg-fn xs ys) 6.0))))))

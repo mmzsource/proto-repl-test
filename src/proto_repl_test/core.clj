@@ -21,9 +21,9 @@
        (reduce merge)))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Average position calculation ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Average position calculation with weight-curves ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 (defn weight-position-seq
@@ -61,6 +61,47 @@
                 (calc-avg-pos (% weights-data) team-history))
            (keys weights-data))))))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Position calculation with linear regression ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn mean [numbers]
+  (/ (apply + numbers) (count numbers)))
+
+(defn square [x] (* x x))
+
+(defn b1 [xs ys]
+  (/
+    (apply +
+           (map *
+               (map (fn [v] (- v (mean xs))) xs)
+               (map (fn [v] (- v (mean ys))) ys)))
+    (apply +
+           (map (fn [v] (square (- v (mean xs)))) xs))))
+
+(defn b0 [xs ys b1]
+  (- (mean ys)
+     (* b1 (mean xs))))
+
+(defn linreg-vals
+  "Return calculated regression values for all xs"
+  [xs ys]
+  (let [b1 (b1 xs ys)
+        b0 (b0 xs ys b1)]
+    (into [] (map (fn [x-val] (+ (* b1 x-val) b0)) xs))))
+
+(defn linreg-fn
+  "Returns linear regression function"
+  [xs ys]
+  (let [b1 (b1 xs ys)
+        b0 (b0 xs ys b1)]
+    (fn [x] (+ b0 (* b1 x)))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                  Predictions                 ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn find-best-predictor [predictor-keys team-predictions]
   (let [predictions        (select-keys team-predictions predictor-keys)
