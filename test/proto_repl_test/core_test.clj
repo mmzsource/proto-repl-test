@@ -26,49 +26,11 @@
  (testing "should calculate weighted average"
    (is (= (weighted-avg '(1 2 1) '(3 2 1)) 2.0))))
 
-
-
-; (deftest transform-data-transforms-correctly
-;   (testing "should transform raw data correctly"
-;     (let [raw-data {:rows [[:PSV "PSV"  1 1 4 3 3 3 2 4 1 1 3]
-;                            [:AJA "Ajax" 2 2 3 2 1 1 1 1 2 2 2]]}
-;           expected {:PSV [1 1 4 3 3 3 2 4 1 1 3]
-;                     :AJA [2 2 3 2 1 1 1 1 2 2 2]}]
-;       (is (= expected (transform-raw-data raw-data))))))
-;
-;
-; (deftest team-averages-calculates-team-averages-correctly
-;   (testing "should calculate team averages correctly"
-;     (let [weights   {:horizontal [0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5]
-;                      :ascend     [0.001 0.003 0.014 0.034 0.065 0.112 0.178 0.279 0.443 0.938]}
-;           team-data [:PSV "PSV" [1 1 4 3 3 3 2 4 1 1 3]]
-;           expected  {:team       :PSV,
-;                      :history    [1 1 4 3 3 3 2 4 1 1],
-;                      :last-pos   3,
-;                      :horizontal 2.3,
-;                      :ascend     1.7155297532656022}]
-;       (is (= expected (team-averages weights team-data))))))
-;
-;
-; (deftest team-averages-handles-nil-correctly
-;   (testing "team averages handles nil correctly"
-;     (let [weights   {:horizontal [0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5]
-;                      :ascend     [0.001 0.003 0.014 0.034 0.065 0.112 0.178 0.279 0.443 0.938]}
-;           team-data [:JPS "Jong PSV" [nil nil nil nil nil nil nil 28 32 29 22]]
-;           expected  {:team       :JPS,
-;                      :history    [nil nil nil nil nil nil nil 28 32 29],
-;                      :last-pos   22,
-;                      :horizontal 29.666666666666668,
-;                      :ascend     29.632530120481928}]
-;       (is (= expected (team-averages weights team-data))))))
-;
-
 (deftest calculates-lin-reg-vals1
   (testing "calculates linear regression y values for each x value"
      (let [xs [1.0 2.0 3.0 4.0 5.0]
            ys [2.0 2.5 3.0 3.5 4.0]]
        (is (= [2.0 2.5 3.0 3.5 4.0] (linreg-vals xs ys))))))
-
 
 (deftest calculates-lin-reg-vals2
   (testing "calculates linear regression y values for each x value"
@@ -127,5 +89,6 @@
                     :last-pos 3,
                     :predictions {:hor 2.3, :das 2.434135888062524, :las 2.266986410871303, :ias 1.7155297532656022, :slr 2.2},
                     :best :das,
+                    :2nd-best :hor
                     :prediction 2.5585528803731252}]
       (is (= expected (analyse team))))))

@@ -141,15 +141,22 @@
       {:slr (linear-regression-prediction all-but-last-position)})))
 
 
-(defn find-best-predictor
-  "should return best predictor given a map of predictions and
+(defn sort-best-predictors
+  "should sort predictors given a map of predictions and
    and an optimal value"
   [predictions optimum]
   (let [diff (zipmap
                (keys predictions)
                (map #(Math/abs (- optimum %))
                  (vals predictions)))]
-    (key (first (sort-by val < diff)))))
+    (sort-by val < diff)))
+
+
+(defn find-best-predictor
+  "should return best predictor given a map of predictions and
+   and an optimal value"
+  [predictions optimum]
+  (key (first (sort-best-predictors predictions optimum))))
 
 
 (defn analyse [team]
@@ -158,13 +165,15 @@
         last-team-position (team/last-position team)
         predictions        (predict team)
         best-predictor     (find-best-predictor predictions last-team-position)
+        second-best-pred   (key (second (sort-best-predictors predictions last-team-position)))
         prediction         (if (= best-predictor :slr)
                              (linear-regression-prediction history)
                              (weighted-avg
                                (best-predictor weights-data)
                                (rest history)))]
     {:team team-key, :history history, :last-pos last-team-position,
-     :predictions predictions, :best best-predictor, :prediction prediction}))
+     :predictions predictions, :best best-predictor,
+     :2nd-best second-best-pred :prediction prediction}))
 
 
 (defn predict-ranks [analysis team-filter]
@@ -173,10 +182,30 @@
                             (assoc acc (:team t) (:prediction t)))
                           {}
                           analysis)
-        filtered-ranks (select-keys rank-data team-filter)
-        sorted-ranks   (sort-by val < filtered-ranks)]
-    sorted-ranks))
+        filtered-ranks (select-keys rank-data team-filter)]
+    (sort-by val < filtered-ranks)))
 
+(defn print-summary [analysis predict-ranks]
+  (let [easy-lookup    (reduce (fn [acc t] (assoc acc (:team t) t)) {} analysis)
+        numbered-ranks (sort-by key < (zipmap (range 1 21) (map first predict-ranks)))
+        a-rank         (first numbered-ranks)
+        team-summary   (let [rank (first a-rank)
+                             team-keyword (second a-rank)
+                             team (team-keyword easy-lookup)]
+                         (hash-map
+                           :pos          rank
+                           :team         team-keyword
+                           :pred         (format "%.3f" (:prediction team))
+                           :hist         (:history team)
+                           :best         (:best team)
+                           :best-val     (format "%.3f" ((:best team) (:predictions team)))
+                           :2nd-best     (:2nd-best team)
+                           :2nd-best-val (format "%.3f" ((:2nd-best team) (:predictions team)))))]
+    (pp/pprint easy-lookup)
+    (pp/pprint numbered-ranks)
+    (pp/print-table
+      [:pos :team :pred :hist :best :best-val :2nd-best :2nd-best-val]
+      [team-summary])))
 
 (defn -main [& args]
   (let [raw-league-data (load-raw-data
@@ -184,4 +213,4 @@
         team-data       (construct-teams raw-league-data)
         analysis        (map analyse team-data)
         predict-ranks   (predict-ranks analysis (:teams raw-league-data))]
-    (pp/pprint predict-ranks)))
+    (print-summary analysis predict-ranks)))

@@ -377,3 +377,9 @@
 (merge {:a 1} {:b 2})
 
 (reduce (fn [acc t] (assoc acc (:team t) (:prediction t))) {} [{:team :a :prediction :p1} {:team :b :prediction :p2}])
+
+(mapv #(:k coll))
+
+(map #(vector (:a %) (:b %)) [{:a 1 :b 2} {:a 6 :b 7}])
+
+(sorted-map 2 :b 1 :a)
