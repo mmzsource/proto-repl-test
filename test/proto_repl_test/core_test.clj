@@ -85,6 +85,7 @@
   (testing "should analyse a team completely"
     (let [team     [:PSV "PSV" [1 1 4 3 3 3 2 4 1 1 3]]
           expected {:team :PSV,
+                    :name "PSV"
                     :history [1 1 4 3 3 3 2 4 1 1 3],
                     :last-pos 3,
                     :predictions {:hor 2.3, :das 2.434135888062524, :las 2.266986410871303, :ias 1.7155297532656022, :slr 2.2},
