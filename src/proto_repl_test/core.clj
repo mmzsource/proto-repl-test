@@ -168,6 +168,7 @@
 
 (defn analyse [team]
   (let [team-key           (team/team-key team)
+        team-name          (team/team-name team)
         history            (team/history team)
         last-team-position (team/last-position team)
         predictions        (predict team)
@@ -178,7 +179,8 @@
                              (weighted-avg
                                (best-predictor weights-data)
                                (rest history)))]
-    {:team team-key, :history history, :last-pos last-team-position,
+    {:team team-key, :name team-name,
+     :history history, :last-pos last-team-position,
      :predictions predictions, :best best-predictor,
      :2nd-best second-best-pred :prediction prediction}))
 
@@ -202,6 +204,7 @@
   (hash-map
     :pos          rank
     :team         team-keyword
+    :name         (:name team-data)
     :pred         (format "%.3f"
                     (:prediction team-data))
     :hist         (:history team-data)
@@ -222,7 +225,7 @@
         best-keys-freq (frequencies (map #(:best %) league-summary))
         sec-best-freq  (frequencies (map #(:2nd-best %) league-summary))]
     (pp/print-table
-      [:pos :team :pred :hist :best :best-val :2nd-best :2nd-best-val]
+      [:pos :team :name :pred :hist :best :best-val :2nd-best :2nd-best-val]
       league-summary)
     (println)
     (pp/print-table (keys best-keys-freq) [best-keys-freq sec-best-freq])))
