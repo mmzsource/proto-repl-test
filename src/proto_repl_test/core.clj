@@ -4,9 +4,11 @@
             [clojure.pprint :as pp]
             [proto-repl-test.team :as team]))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;          Input data           ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (defn load-a-file [filename]
   (io/file (io/resource filename)))
@@ -31,9 +33,11 @@
       (team/construct kw name (vec history)))
     (:rows raw-league-data)))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;     Position calculation with weight-curves     ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (defn check-xys [xs ys]
   (assert seq? xs)
@@ -42,6 +46,7 @@
   (assert (= (count xs) (count ys)))
   (assert (every? number? xs))
   (assert (every? #(or (number? %) (nil? %)) ys)))
+
 
 (defn xy-nil-filter
   "Returns a sequence of [x y] pairs with no nil values.
@@ -64,9 +69,11 @@
                (reduce + (map first wvs)))]
     (double avg)))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Position calculation with linear regression ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (defn mean [numbers]
   (/ (apply + numbers) (count numbers)))
@@ -185,27 +192,42 @@
         filtered-ranks (select-keys rank-data team-filter)]
     (sort-by val < filtered-ranks)))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                  Pretty printing             ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(defn team-summary [rank team-keyword team-data]
+  (hash-map
+    :pos          rank
+    :team         team-keyword
+    :pred         (format "%.3f"
+                    (:prediction team-data))
+    :hist         (:history team-data)
+    :best         (:best team-data)
+    :best-val     (format "%.3f"
+                    ((:best team-data) (:predictions team-data)))
+    :2nd-best     (:2nd-best team-data)
+    :2nd-best-val (format "%.3f"
+                    ((:2nd-best team-data) (:predictions team-data)))))
+
+
 (defn print-summary [analysis predict-ranks]
   (let [easy-lookup    (reduce (fn [acc t] (assoc acc (:team t) t)) {} analysis)
         numbered-ranks (sort-by key < (zipmap (range 1 21) (map first predict-ranks)))
-        a-rank         (first numbered-ranks)
-        team-summary   (let [rank (first a-rank)
-                             team-keyword (second a-rank)
-                             team (team-keyword easy-lookup)]
-                         (hash-map
-                           :pos          rank
-                           :team         team-keyword
-                           :pred         (format "%.3f" (:prediction team))
-                           :hist         (:history team)
-                           :best         (:best team)
-                           :best-val     (format "%.3f" ((:best team) (:predictions team)))
-                           :2nd-best     (:2nd-best team)
-                           :2nd-best-val (format "%.3f" ((:2nd-best team) (:predictions team)))))]
-    (pp/pprint easy-lookup)
-    (pp/pprint numbered-ranks)
+        league-summary (map
+                         #(team-summary (first %) (second %) ((second %) easy-lookup))
+                         numbered-ranks)]
     (pp/print-table
       [:pos :team :pred :hist :best :best-val :2nd-best :2nd-best-val]
-      [team-summary])))
+      league-summary)))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;                  Main Engine                 ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (defn -main [& args]
   (let [raw-league-data (load-raw-data

@@ -29,5 +29,3 @@
           [:VLD "Real Valladolid"      21  15  16  18  27  23  14  19  25  36  27]]
    :teams [:ALV :ATB :ATM :BET :CLV :COR :EIB :ESY :FCB :GET
            :GIR :LAP :LEG :LVT :MLA :REA :SEV :SOC :VAL :VIL]}
-
-;; [:RSA "Racing de Santander"  10   6  12  16  12  20  40 nil  39 nil nil]

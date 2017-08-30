@@ -430,6 +430,9 @@ The plan:
 
 ;; Sort together with other teams
 
+Update: plan worked. But the linear regression is sometimes a bit too eager.
+Must build in some safety valves. Then it's done :)
+
 ## License
 
 Use / change / redistribute at your own risk. It is not copyrighted. I'm standing on the shoulders of giants here.

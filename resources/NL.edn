@@ -38,10 +38,3 @@
           [:VVV "VVV-Venlo"        20  17  19  12  17  16  17  23  25  20  19]]
    :teams [:ADO :AJA :AZA :EXC :FEY :GRO :HEA :HEE :NAC :PEC :PSV :ROD :SPR
            :TWE :UTR :WIL :VIT :VVV]}
-
-;; [:AGO "AGOVV"            38  36  29  24  33  35  35 nil nil nil nil]
-;; [:JUT "Jong FC Utrecht" nil nil nil nil nil nil nil nil nil nil  36]
-;; [:HAA "Haarlem"          32  38  30  38 nil nil nil nil nil nil nil]
-;; [:JTW "Jong FC Twente"  nil nil nil nil nil nil nil  35  31 nil nil]
-;; [:RBC "RBC Roosendaal"   21  29  34  29  35 nil nil nil nil nil nil]
-;; [:VEE "SC Veendam"       26  33  37  27  22  34  36 nil nil nil nil]
