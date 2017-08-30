@@ -218,10 +218,15 @@
         numbered-ranks (sort-by key < (zipmap (range 1 21) (map first predict-ranks)))
         league-summary (map
                          #(team-summary (first %) (second %) ((second %) easy-lookup))
-                         numbered-ranks)]
+                         numbered-ranks)
+        best-keys-freq (frequencies (map #(:best %) league-summary))
+        sec-best-freq  (frequencies (map #(:2nd-best %) league-summary))]
     (pp/print-table
       [:pos :team :pred :hist :best :best-val :2nd-best :2nd-best-val]
-      league-summary)))
+      league-summary)
+    (println)
+    (pp/print-table (keys best-keys-freq) [best-keys-freq sec-best-freq])))
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
