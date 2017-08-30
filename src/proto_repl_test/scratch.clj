@@ -371,3 +371,9 @@
   (fn [v [x y]] (conj v x))
   []
   [[0 2] [3 3]])
+
+(map #(second %) [[1 5] [2 6] [3 7]])
+
+(merge {:a 1} {:b 2})
+
+(reduce (fn [acc t] (assoc acc (:team t) (:prediction t))) {} [{:team :a :prediction :p1} {:team :b :prediction :p2}])
