@@ -34,3 +34,5 @@
 
 
 (charts/scatter-chart "Weights Data" weights-data)
+
+(charts/scatter-chart "Linear Regression" {:linreg [19 24 26 21 15 12 7 12 9 4.1]})

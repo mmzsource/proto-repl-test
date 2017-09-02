@@ -128,6 +128,8 @@
         linreg-function (linreg-fn xs ys)]
     (double (linreg-function count))))
 
+
+(linear-regression-prediction [19 24 26 21 15 12 4 7 12 9 6])
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                  Predictions                 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -167,17 +169,21 @@
 (defn predict-new-position [best-predictor second-best-pred history]
   (let [nils (count (filter nil? history))]
     (if (= best-predictor :slr)
-      (if (> nils 4)
-        (let [non-nil-seq     (filter #(not (nil? %)) history)
-              last-pos        (last non-nil-seq)
-              one-to-last-pos (second (reverse non-nil-seq))
-              weighted-pos    (double (/ (+ one-to-last-pos (* 2 last-pos)) 3))]
-          [weighted-pos :ovr])
-        [(linear-regression-prediction history) :slr])
+      (let [linreg-pred     (linear-regression-prediction history)
+            non-nil-seq     (filter #(not (nil? %)) history)
+            last-pos        (last non-nil-seq)
+            weighted-pos    (double (/ (+ (linear-regression-prediction (drop-last history)) last-pos) 2))
+            one-to-last-pos (second (reverse non-nil-seq))]
+            ;weighted-pos    (double (/ (+ one-to-last-pos (* 2 last-pos)) 3))]
+        (if (or (> nils 4) (< linreg-pred 6))
+            ; override if not enough data (too much nils) or
+            ; linear regression would predict a team into the top of the league
+            ; I think lin reg doesn't hold for the top of the league
+            ; In those cases take the lin reg prediction (without last years rank)
+            ; and average it with last years rank.
+            [weighted-pos :ovr]
+            [linreg-pred :slr]))
       [(weighted-avg (best-predictor weights-data) (rest history)) best-predictor])))
-     ;[(weighted-avg
-     ; (best-predictor weights-data)
-     ; (rest history) best-predictor)))
 
 (defn analyse [team]
   (let [team-key           (team/team-key team)
@@ -238,7 +244,7 @@
         best-keys-freq (frequencies (map #(:best-p %) league-summary))
         sec-best-freq  (frequencies (map #(:2nd-p %) league-summary))]
     (pp/print-table
-      [:pos :team :name :pred :hist :best-p :best-v :2nd-p :2nd-v :f-pred]
+      [:pos :team :name :pred :hist :best-v :2nd-v :best-p :2nd-p :f-pred]
       league-summary)
     (println)
     (pp/print-table [:hor :das :las :ias :slr] [best-keys-freq sec-best-freq])))
