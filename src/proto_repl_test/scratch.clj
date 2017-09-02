@@ -383,3 +383,7 @@
 (map #(vector (:a %) (:b %)) [{:a 1 :b 2} {:a 6 :b 7}])
 
 (sorted-map 2 :b 1 :a)
+
+(count (filter nil? [nil 3 nil 4 nil 5 nil 6]))
+
+(filter #(not (nil? %)) [nil 2 nil 3 nil 4 nil 5])

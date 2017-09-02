@@ -128,7 +128,6 @@
         linreg-function (linreg-fn xs ys)]
     (double (linreg-function count))))
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                  Predictions                 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -165,6 +164,20 @@
   [predictions optimum]
   (key (first (sort-best-predictors predictions optimum))))
 
+(defn predict-new-position [best-predictor second-best-pred history]
+  (let [nils (count (filter nil? history))]
+    (if (= best-predictor :slr)
+      (if (> nils 4)
+        (let [non-nil-seq     (filter #(not (nil? %)) history)
+              last-pos        (last non-nil-seq)
+              one-to-last-pos (second (reverse non-nil-seq))
+              weighted-pos    (double (/ (+ one-to-last-pos (* 2 last-pos)) 3))]
+          [weighted-pos :ovr])
+        [(linear-regression-prediction history) :slr])
+      [(weighted-avg (best-predictor weights-data) (rest history)) best-predictor])))
+     ;[(weighted-avg
+     ; (best-predictor weights-data)
+     ; (rest history) best-predictor)))
 
 (defn analyse [team]
   (let [team-key           (team/team-key team)
@@ -174,15 +187,14 @@
         predictions        (predict team)
         best-predictor     (find-best-predictor predictions last-team-position)
         second-best-pred   (key (second (sort-best-predictors predictions last-team-position)))
-        prediction         (if (= best-predictor :slr)
-                             (linear-regression-prediction history)
-                             (weighted-avg
-                               (best-predictor weights-data)
-                               (rest history)))]
+        pred-tuple         (predict-new-position best-predictor second-best-pred history)
+        prediction         (first pred-tuple)
+        predictor          (second pred-tuple)]
     {:team team-key, :name team-name,
      :history history, :last-pos last-team-position,
      :predictions predictions, :best best-predictor,
-     :2nd-best second-best-pred :prediction prediction}))
+     :2nd-best second-best-pred :prediction prediction
+     :final-predictor predictor}))
 
 
 (defn predict-ranks [analysis team-filter]
@@ -202,18 +214,19 @@
 
 (defn team-summary [rank team-keyword team-data]
   (hash-map
-    :pos          rank
-    :team         team-keyword
-    :name         (:name team-data)
-    :pred         (format "%.3f"
-                    (:prediction team-data))
-    :hist         (:history team-data)
-    :best         (:best team-data)
-    :best-val     (format "%.3f"
-                    ((:best team-data) (:predictions team-data)))
-    :2nd-best     (:2nd-best team-data)
-    :2nd-best-val (format "%.3f"
-                    ((:2nd-best team-data) (:predictions team-data)))))
+    :pos    rank
+    :team   team-keyword
+    :name   (:name team-data)
+    :pred   (format "%.3f"
+              (:prediction team-data))
+    :hist   (:history team-data)
+    :best-p (:best team-data)
+    :best-v (format "%.3f"
+              ((:best team-data) (:predictions team-data)))
+    :2nd-p  (:2nd-best team-data)
+    :2nd-v  (format "%.3f"
+              ((:2nd-best team-data) (:predictions team-data)))
+    :f-pred (:final-predictor team-data)))
 
 
 (defn print-summary [analysis predict-ranks]
@@ -222,13 +235,13 @@
         league-summary (map
                          #(team-summary (first %) (second %) ((second %) easy-lookup))
                          numbered-ranks)
-        best-keys-freq (frequencies (map #(:best %) league-summary))
-        sec-best-freq  (frequencies (map #(:2nd-best %) league-summary))]
+        best-keys-freq (frequencies (map #(:best-p %) league-summary))
+        sec-best-freq  (frequencies (map #(:2nd-p %) league-summary))]
     (pp/print-table
-      [:pos :team :name :pred :hist :best :best-val :2nd-best :2nd-best-val]
+      [:pos :team :name :pred :hist :best-p :best-v :2nd-p :2nd-v :f-pred]
       league-summary)
     (println)
-    (pp/print-table (keys best-keys-freq) [best-keys-freq sec-best-freq])))
+    (pp/print-table [:hor :das :las :ias :slr] [best-keys-freq sec-best-freq])))
 
 
 
