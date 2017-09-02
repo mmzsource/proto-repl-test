@@ -258,7 +258,7 @@
 
 (defn -main [& args]
   (let [raw-league-data (load-raw-data
-                          (load-a-file (or (first args) "NL.edn")))
+                          (load-a-file (or (first args) "NED.edn")))
         team-data       (construct-teams raw-league-data)
         analysis        (map analyse team-data)
         predict-ranks   (predict-ranks analysis (:teams raw-league-data))]
