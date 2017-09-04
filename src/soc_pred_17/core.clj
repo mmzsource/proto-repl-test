@@ -23,15 +23,16 @@
        (map #(hash-map (first %) (subvec % 2)))
        (reduce merge)))
 
+
 (def weights-data
   (transform-weights-data (load-raw-data (load-a-file "weights.edn"))))
 
 
 (defn construct-teams [raw-league-data]
   (map
-    (fn [[kw name & history]]
-      (team/construct kw name (vec history)))
-    (:rows raw-league-data)))
+   (fn [[kw name & history]]
+     (team/construct kw name (vec history)))
+   (:rows raw-league-data)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -141,11 +142,11 @@
   [team]
   (let [all-but-last-position (team/all-but-last-position team)]
     (merge
-      {:hor (weighted-avg (:hor weights-data) all-but-last-position)}
-      {:das (weighted-avg (:das weights-data) all-but-last-position)}
-      {:las (weighted-avg (:las weights-data) all-but-last-position)}
-      {:ias (weighted-avg (:ias weights-data) all-but-last-position)}
-      {:slr (linear-regression-prediction all-but-last-position)})))
+     {:hor (weighted-avg (:hor weights-data) all-but-last-position)}
+     {:das (weighted-avg (:das weights-data) all-but-last-position)}
+     {:las (weighted-avg (:las weights-data) all-but-last-position)}
+     {:ias (weighted-avg (:ias weights-data) all-but-last-position)}
+     {:slr (linear-regression-prediction all-but-last-position)})))
 
 
 (defn sort-best-predictors
@@ -153,9 +154,9 @@
    and an optimal value"
   [predictions optimum]
   (let [diff (zipmap
-               (keys predictions)
-               (map #(Math/abs (- optimum %))
-                 (vals predictions)))]
+              (keys predictions)
+              (map #(Math/abs (- optimum %))
+                   (vals predictions)))]
     (sort-by val < diff)))
 
 
@@ -185,29 +186,29 @@
       [(weighted-avg (best-predictor weights-data) (rest history)) best-predictor])))
 
 (defn analyse [team]
-  (let [team-key           (team/team-key team)
-        team-name          (team/team-name team)
-        history            (team/history team)
+  (let [history            (team/history team)
         last-team-position (team/last-position team)
         predictions        (predict team)
         best-predictor     (find-best-predictor predictions last-team-position)
         second-best-pred   (key (second (sort-best-predictors predictions last-team-position)))
-        pred-tuple         (predict-new-position best-predictor second-best-pred history)
-        prediction         (first pred-tuple)
-        predictor          (second pred-tuple)]
-    {:team team-key, :name team-name,
-     :history history, :last-pos last-team-position,
-     :predictions predictions, :best best-predictor,
-     :2nd-best second-best-pred :prediction prediction
-     :final-predictor predictor}))
+        pred-tuple         (predict-new-position best-predictor second-best-pred history)]
+    {:team            (team/team-key team),
+     :name            (team/team-name team),
+     :history         history,
+     :last-pos        last-team-position,
+     :predictions     predictions,
+     :best            best-predictor,
+     :2nd-best        second-best-pred
+     :prediction      (first pred-tuple)
+     :final-predictor (second pred-tuple)}))
 
 
 (defn predict-ranks [analysis team-filter]
   (let [rank-data       (reduce
-                          (fn [acc t]
-                            (assoc acc (:team t) (:prediction t)))
-                          {}
-                          analysis)
+                         (fn [acc t]
+                           (assoc acc (:team t) (:prediction t)))
+                         {}
+                         analysis)
         filtered-ranks (select-keys rank-data team-filter)]
     (sort-by val < filtered-ranks)))
 
@@ -223,14 +224,14 @@
     :team   team-keyword
     :name   (:name team-data)
     :pred   (format "%.3f"
-              (:prediction team-data))
+             (:prediction team-data))
     :hist   (:history team-data)
     :best-p (:best team-data)
     :best-v (format "%.3f"
-              ((:best team-data) (:predictions team-data)))
+             ((:best team-data) (:predictions team-data)))
     :2nd-p  (:2nd-best team-data)
     :2nd-v  (format "%.3f"
-              ((:2nd-best team-data) (:predictions team-data)))
+             ((:2nd-best team-data) (:predictions team-data)))
     :f-pred (:final-predictor team-data)))
 
 
@@ -238,8 +239,8 @@
   (let [easy-lookup    (reduce (fn [acc t] (assoc acc (:team t) t)) {} analysis)
         numbered-ranks (sort-by key < (zipmap (range 1 21) (map first predict-ranks)))
         league-summary (map
-                         #(team-summary (first %) (second %) ((second %) easy-lookup))
-                         numbered-ranks)
+                        #(team-summary (first %) (second %) ((second %) easy-lookup))
+                        numbered-ranks)
         best-keys-freq (frequencies (map :best-p league-summary))
         sec-best-freq  (frequencies (map :2nd-p  league-summary))]
     (pp/print-table
@@ -257,7 +258,7 @@
 
 (defn -main [& args]
   (let [raw-league-data (load-raw-data
-                          (load-a-file (or (first args) "NED.edn")))
+                         (load-a-file (or (first args) "NED.edn")))
         team-data       (construct-teams raw-league-data)
         analysis        (map analyse team-data)
         predict-ranks   (predict-ranks analysis (:teams raw-league-data))]
