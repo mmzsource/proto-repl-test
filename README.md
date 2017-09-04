@@ -1,5 +1,21 @@
 # proto-repl-test
 
+A project that started out as a test of the atom proto-repl tooling but grew
+into my soccer predictions for 2017.
+
+# Prerequisites
+
+- java installed
+- leiningen installed.
+
+# Run project
+
+`lein run`
+
+# Test project
+
+`lein test`
+
 A project to experiment with proto-repl
 
 ## Installation
