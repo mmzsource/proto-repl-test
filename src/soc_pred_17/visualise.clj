@@ -1,4 +1,4 @@
-(ns proto-repl-test.visualise
+(ns soc-pred-17.visualise
   (:require [prc :as charts]
             [clojure.java.io :as io]
             [clojure.edn :as edn]))

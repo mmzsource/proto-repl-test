@@ -1,8 +1,8 @@
-(ns proto-repl-test.core
+(ns soc-pred-17.core
   (:require [clojure.java.io :as io]
             [clojure.edn :as edn]
             [clojure.pprint :as pp]
-            [proto-repl-test.team :as team]))
+            [soc-pred-17.team :as team]))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

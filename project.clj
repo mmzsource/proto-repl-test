@@ -1,4 +1,4 @@
-(defproject proto-repl-test "0.1.0-SNAPSHOT"
+(defproject soc-pred-17 "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -8,7 +8,7 @@
                  [proto-repl-charts "0.3.2"]
                  [clj-http "2.3.0"]
                  [cheshire "5.7.0"]]
-  :main ^:skip-aot proto-repl-test.core
+  :main ^:skip-aot soc-pred-17.core
   :target-path "target/%s"
-  :test-paths ["test" "test/proto_repl_test"]
+  :test-paths ["test" "test/soc_pred_17"]
   :profiles {:uberjar {:aot :all}})

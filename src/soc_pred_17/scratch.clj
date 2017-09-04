@@ -1,4 +1,4 @@
-(ns proto-repl-test.scratch
+(ns soc-pred-17.scratch
   (:require [prc :as charts]
             [clj-http.client :as client]
             [clojure.pprint :as pprint]

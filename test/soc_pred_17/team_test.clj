@@ -1,6 +1,6 @@
-(ns proto-repl-test.team-test
+(ns soc-pred-17.team-test
   (:require [clojure.test :refer :all]
-            [proto-repl-test.team :refer :all]))
+            [soc-pred-17.team :refer :all]))
 
 
 (deftest should-construct-a-team

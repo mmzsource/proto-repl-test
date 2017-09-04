@@ -1,6 +1,6 @@
-(ns proto-repl-test.core-test
+(ns soc-pred-17.core-test
   (:require [clojure.test :refer :all]
-            [proto-repl-test.core :refer :all]))
+            [soc-pred-17.core :refer :all]))
 
 
 (deftest should-filter-nil-y-vals
@@ -91,7 +91,7 @@
                     :best :das
                     :2nd-best :hor,
                     :final-predictor :das,
-                    :prediction 2.5585528803731252, 
+                    :prediction 2.5585528803731252,
                     :predictions {:hor 2.3, :das 2.434135888062524, :las 2.266986410871303, :ias 1.7155297532656022, :slr 2.2},}]
 
       (is (= expected (analyse team))))))

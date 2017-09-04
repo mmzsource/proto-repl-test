@@ -1,4 +1,4 @@
-(ns proto-repl-test.team)
+(ns soc-pred-17.team)
 
 (defn construct [team-key team-name team-history]
 

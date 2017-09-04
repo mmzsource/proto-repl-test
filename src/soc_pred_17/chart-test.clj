@@ -1,4 +1,4 @@
-(ns proto-repl-test.chart-test
+(ns soc-pred-17.chart-test
   (:require [prc :as charts]))
 
 (defn -main [& args]
