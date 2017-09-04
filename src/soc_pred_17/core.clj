@@ -42,7 +42,7 @@
 (defn check-xys [xs ys]
   (assert seq? xs)
   (assert seq? ys)
-  (assert (> (count xs) 0))
+  (assert pos? (count xs))
   (assert (= (count xs) (count ys)))
   (assert (every? number? xs))
   (assert (every? #(or (number? %) (nil? %)) ys)))
@@ -102,7 +102,7 @@
   [xs ys]
   (let [b1 (b1 xs ys)
         b0 (b0 xs ys b1)]
-    (into [] (map (fn [x-val] (+ (* b1 x-val) b0)) xs))))
+    (vec (map (fn [x-val] (+ (* b1 x-val) b0)) xs))))
 
 
 (defn linreg-fn
@@ -123,13 +123,12 @@
 
   (let [count           (inc (count vs))
         xys             (xy-nil-filter (range 1 count) vs)
-        xs              (map #(first %)  xys)
-        ys              (map #(second %) xys)
+        xs              (map first  xys)
+        ys              (map second xys)
         linreg-function (linreg-fn xs ys)]
     (double (linreg-function count))))
 
 
-(linear-regression-prediction [19 24 26 21 15 12 4 7 12 9 6])
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;                  Predictions                 ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -170,7 +169,7 @@
   (let [nils (count (filter nil? history))]
     (if (= best-predictor :slr)
       (let [linreg-pred     (linear-regression-prediction history)
-            non-nil-seq     (filter #(not (nil? %)) history)
+            non-nil-seq     (remove nil? history)
             last-pos        (last non-nil-seq)
             weighted-pos    (double (/ (+ (linear-regression-prediction (drop-last history)) last-pos) 2))
             one-to-last-pos (second (reverse non-nil-seq))]
@@ -241,8 +240,8 @@
         league-summary (map
                          #(team-summary (first %) (second %) ((second %) easy-lookup))
                          numbered-ranks)
-        best-keys-freq (frequencies (map #(:best-p %) league-summary))
-        sec-best-freq  (frequencies (map #(:2nd-p %) league-summary))]
+        best-keys-freq (frequencies (map :best-p league-summary))
+        sec-best-freq  (frequencies (map :2nd-p  league-summary))]
     (pp/print-table
       [:pos :team :name :pred :hist :best-v :2nd-v :best-p :2nd-p :f-pred]
       league-summary)

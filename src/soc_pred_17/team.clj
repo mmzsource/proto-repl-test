@@ -23,7 +23,7 @@
   (last team-history))
 
 (defn- team-all-but-last-position [[_ _ team-history]]
-  (subvec team-history 0 (- (count team-history) 1)))
+  (subvec team-history 0 (dec (count team-history))))
 
 (defn team-key [team]
   (team-keyword team))

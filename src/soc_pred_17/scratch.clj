@@ -23,41 +23,41 @@
   #(select-keys % [:id :caption :league :year])
   (:body competitions))
 
-(defn filter-competition [competitions-year-info]
-  (map
-    #(select-keys % [:id :caption :league :year])
-    competitions-year-info))
+; (defn filter-competition [competitions-year-info]
+;   (map
+;     #(select-keys % [:id :caption :league :year])
+;     competitions-year-info))
+;
+; (def competitions-map
+;   (for [url competition-urls]
+;     (map #({filter-competition % (:body (client/get url {:as :json}))}))))
 
-(def competitions-map
-  (for [url competition-urls]
-    (map #({filter-competition % (:body (client/get url {:as :json}))}))))
+; (def eng-2017 (client/get
+;                  "http://api.football-data.org/v1/competitions/426/leagueTable?season=2107"
+;                  {:as :json}))
+;
+; (def nl-data
+;   (edn/read-string
+;     (slurp
+;       (io/resource "NL-eindstanden.edn"))))
 
-(def eng-2017 (client/get
-                 "http://api.football-data.org/v1/competitions/426/leagueTable?season=2107"
-                 {:as :json}))
+; (keys nl-data)
+;
+; (:teams nl-data)
+;
+; (:ranks nl-data)
+;
+; (def ranks (get-in nl-data [:ranks :2016-2017]))
+;
+; (zipmap ranks (range 1 40))
+;
+; (conj [1 2] 3)
+;
+; ;; Map met als keys alle team in de NL competitie en als val een lege vector
+; (def team-positions
+;   (atom (zipmap (keys (:teams nl-data)) (repeatedly vector))))
 
-(def nl-data
-  (edn/read-string
-    (slurp
-      (io/resource "NL-eindstanden.edn"))))
-
-(keys nl-data)
-
-(:teams nl-data)
-
-(:ranks nl-data)
-
-(def ranks (get-in nl-data [:ranks :2016-2017]))
-
-(zipmap ranks (range 1 40))
-
-(conj [1 2] 3)
-
-;; Map met als keys alle team in de NL competitie en als val een lege vector
-(def team-positions
-  (atom (zipmap (keys (:teams nl-data)) (repeatedly vector))))
-
-(swap! team-positions update-in [:AJA] conj 1)
+; (swap! team-positions update-in [:AJA] conj 1)
 
 (def test-data
   {:teams {:AJA "Ajax" :FEY "Feyenoord" :PSV "PSV"}
@@ -73,43 +73,43 @@
     (swap! test-team-positions update-in [team] conj (team year-positions))))
 
 
-(def team-positions
-  (atom (zipmap (keys (:teams nl-data)) (repeatedly vector))))
-
-(defn bla [competition-data year-keys]
-  (for [team (keys (:teams competition-data))
-        year year-keys]
-    (let [year-positions (zipmap (get-in competition-data [:ranks year]) (range 1 50))]
-      (swap! team-positions update-in [team] conj (team year-positions)))))
-
-(bla nl-data (sort (keys (:ranks nl-data))))
-
-(def ranks2 @team-positions)
-
-(pprint/pprint ranks2)
-
-(charts/scatter-chart "Position scatter" (:ranks2 nl-data))
+; (def team-positions
+;   (atom (zipmap (keys (:teams nl-data)) (repeatedly vector))))
+;
+; (defn bla [competition-data year-keys]
+;   (for [team (keys (:teams competition-data))
+;         year year-keys]
+;     (let [year-positions (zipmap (get-in competition-data [:ranks year]) (range 1 50))]
+;       (swap! team-positions update-in [team] conj (team year-positions)))))
+;
+; (bla nl-data (sort (keys (:ranks nl-data))))
+;
+; (def ranks2 @team-positions)
+;
+; (pprint/pprint ranks2)
+;
+; (charts/scatter-chart "Position scatter" (:ranks2 nl-data))
 
 ;; 20170806
 ;; Start working with normalized dataset
 
-(def nl-normalized-data
-  (edn/read-string
-    (slurp
-      (io/resource "NL-eindstanden-normalized.edn"))))
-
-(:rows nl-normalized-data)
+; (def nl-normalized-data
+;   (edn/read-string
+;     (slurp
+;       (io/resource "NL-eindstanden-normalized.edn"))))
+;
+; (:rows nl-normalized-data)
 
 (defn filter-by-index [coll idxs]
   (map (partial nth coll) idxs))
 
 (filter-by-index ["A" "B" "C" "D"] [2 3])
 
-(filter-by-index (first (:rows nl-normalized-data)) [2 3 4 5 6 7 8 9 10 11 12])
+; (filter-by-index (first (:rows nl-normalized-data)) [2 3 4 5 6 7 8 9 10 11 12])
 
-(map #(filter-by-index % [2 3 4 5 6 7 8 9 10 11 12]) (:rows nl-normalized-data))
+; (map #(filter-by-index % [2 3 4 5 6 7 8 9 10 11 12]) (:rows nl-normalized-data))
 
-(map #(prn %) [["1" "Z"] ["2"] ["A"] ["B"]])
+; (map #(prn %) [["1" "Z"] ["2"] ["A"] ["B"]])
 
 (def row [:a 1 2 3 4])
 
@@ -120,7 +120,7 @@
 
 (transform row)
 
-(map transform (:rows nl-normalized-data))
+; (map transform (:rows nl-normalized-data))
 
 (def plays [{:band "Burial",     :plays 979,  :loved 9}
             {:band "Eno",        :plays 2333, :loved 15}
@@ -151,26 +151,26 @@
         needle   (first (filter #(= weights-key (first %)) haystack))]
      (subvec needle 2 12)))
 
-(def sia-weights   (find-weights-for :sia raw-weights-data))
-(def ia-weights    (find-weights-for :ia  raw-weights-data))
-(def lin-weights   (find-weights-for :lin raw-weights-data))
-(def da-weights    (find-weights-for :da  raw-weights-data))
-(def sda-weights   (find-weights-for :sda raw-weights-data))
-(def na-weights    (find-weights-for :na  raw-weights-data))
+; (def sia-weights   (find-weights-for :sia raw-weights-data))
+; (def ia-weights    (find-weights-for :ia  raw-weights-data))
+; (def lin-weights   (find-weights-for :lin raw-weights-data))
+; (def da-weights    (find-weights-for :da  raw-weights-data))
+; (def sda-weights   (find-weights-for :sda raw-weights-data))
+; (def na-weights    (find-weights-for :na  raw-weights-data))
 
-(prn (->> [0.500 0.550 0.587 0.611 0.623 0.623 0.611 0.587 0.550 0.500]
-       (map #(- 1 %))))
-
-(pprint/pprint
-  (map reverse [[:da1  "decreasing ascend 1"  0.062 0.557 0.721 0.822 0.888 0.935 0.966 0.986 0.997 0.999]
-                [:da2  "decreasing ascend 2"  0.007 0.396 0.584 0.708 0.798 0.865 0.915 0.953 0.981 0.998]
-                [:da3  "decreasing ascend 3"  0.003 0.265 0.446 0.582 0.690 0.778 0.850 0.910 0.959 0.998]
-                [:da4  "decreasing ascend 4"  0.002 0.173 0.322 0.454 0.570 0.674 0.768 0.853 0.930 0.998]
-                [:la   "lineair ascend"       0.001 0.112 0.223 0.334 0.445 0.556 0.667 0.778 0.889 0.999]
-                [:ia4  "increasing ascend 4"  0.002 0.070 0.147 0.232 0.326 0.430 0.546 0.678 0.827 0.998]
-                [:ia3  "increasing ascend 3"  0.002 0.041 0.090 0.150 0.222 0.310 0.418 0.554 0.735 0.997]
-                [:ia2  "increasing ascend 2"  0.002 0.019 0.047 0.085 0.135 0.202 0.292 0.416 0.604 0.993]
-                [:ia1  "increasing ascend 1"  0.001 0.003 0.014 0.034 0.065 0.112 0.178 0.279 0.443 0.938]]))
+; (prn (->> [0.500 0.550 0.587 0.611 0.623 0.623 0.611 0.587 0.550 0.500]
+;        (map #(- 1 %))))
+;
+; (pprint/pprint
+;   (map reverse [[:da1  "decreasing ascend 1"  0.062 0.557 0.721 0.822 0.888 0.935 0.966 0.986 0.997 0.999]
+;                 [:da2  "decreasing ascend 2"  0.007 0.396 0.584 0.708 0.798 0.865 0.915 0.953 0.981 0.998]
+;                 [:da3  "decreasing ascend 3"  0.003 0.265 0.446 0.582 0.690 0.778 0.850 0.910 0.959 0.998]
+;                 [:da4  "decreasing ascend 4"  0.002 0.173 0.322 0.454 0.570 0.674 0.768 0.853 0.930 0.998]
+;                 [:la   "lineair ascend"       0.001 0.112 0.223 0.334 0.445 0.556 0.667 0.778 0.889 0.999]
+;                 [:ia4  "increasing ascend 4"  0.002 0.070 0.147 0.232 0.326 0.430 0.546 0.678 0.827 0.998]
+;                 [:ia3  "increasing ascend 3"  0.002 0.041 0.090 0.150 0.222 0.310 0.418 0.554 0.735 0.997]
+;                 [:ia2  "increasing ascend 2"  0.002 0.019 0.047 0.085 0.135 0.202 0.292 0.416 0.604 0.993]
+;                 [:ia1  "increasing ascend 1"  0.001 0.003 0.014 0.034 0.065 0.112 0.178 0.279 0.443 0.938]]))
 
 (defn la2 [x] (+ 0.25 (* 0.5 x)))
 
@@ -186,14 +186,14 @@
 
 (keys (take 3 (sort-by val < diff-fm)))
 
-(def test-map {:a :fiets :b :bel})
-(defn work-with-test-map-entry [[k v]]
-  (prn "key: " k " - val: " v))
-(map work-with-test-map-entry test-map)
-(defn work-with-test-map-entry2 [some-string [k v]]
-  (prn some-string " - " k " - " v))
-(map (partial work-with-test-map-entry2 "bla") test-map)
-(map prn test-map)
+; (def test-map {:a :fiets :b :bel})
+; (defn work-with-test-map-entry [[k v]]
+;   (prn "key: " k " - val: " v))
+; (map work-with-test-map-entry test-map)
+; (defn work-with-test-map-entry2 [some-string [k v]]
+;   (prn some-string " - " k " - " v))
+; (map (partial work-with-test-map-entry2 "bla") test-map)
+; ; (map prn test-map)
 
 (zipmap
   (range 1 21)
@@ -372,13 +372,11 @@
   []
   [[0 2] [3 3]])
 
-(map #(second %) [[1 5] [2 6] [3 7]])
+(map second [[1 5] [2 6] [3 7]])
 
 (merge {:a 1} {:b 2})
 
 (reduce (fn [acc t] (assoc acc (:team t) (:prediction t))) {} [{:team :a :prediction :p1} {:team :b :prediction :p2}])
-
-(mapv #(:k coll))
 
 (map #(vector (:a %) (:b %)) [{:a 1 :b 2} {:a 6 :b 7}])
 
@@ -386,4 +384,11 @@
 
 (count (filter nil? [nil 3 nil 4 nil 5 nil 6]))
 
-(filter #(not (nil? %)) [nil 2 nil 3 nil 4 nil 5])
+(remove nil? [nil 2 nil 3 nil 4 nil 5])
+
+(defn test-pre [x]
+  {:pre [(pos? x)]}
+  (inc x))
+
+(test-pre -1)
+(test-pre 1)

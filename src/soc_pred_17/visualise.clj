@@ -10,7 +10,7 @@
 
 (def raw-league-data
   (edn/read-string
-    (slurp (io/resource "NL.edn"))))
+    (slurp (io/resource "NED.edn"))))
 
 
 (def raw-weights-data
